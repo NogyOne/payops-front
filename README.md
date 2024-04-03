@@ -16,4 +16,3 @@ Is only for admin users, customers are not users on this application.
  - NextJs
  - React
  - TailwindCSS
-# payops-front

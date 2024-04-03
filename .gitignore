@@ -34,3 +34,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore artifacts:
+build
+coverage
+
+# dotenv environment variables file
+.env
+.env.test
