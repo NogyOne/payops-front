@@ -1,49 +1,34 @@
-import React from 'react'
-import Navbar from '@/components/Navbar'
-import Row from '@/components/Row'
-import { getSubscriptions } from '@/services/api'
-
-const subscriptions = await getSubscriptions()
+'use client'
+import React, { useState } from 'react'
+import SubsTable from '@/components/SubsTable'
+import ModalNewSubscription from '@/components/ModalNewSubscription'
+import { Icons } from '@/components/Icons'
 
 export default function Subscriptions() {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleOpenModal = () => {
+    setShowModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(false)
+  }
+
   return (
     <section className='bg-[#EFEFEF] w-full overflow-hidden'>
-      
-      <article className='p-10'>
-        <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-          <table className='w-full text-sm text-left text-gray-500 rtl:text-right'>
-            <thead className='text-xs text-gray-700 uppercase bg-gray-300 '>
-              <tr>
-                <th scope='col' className='px-6 py-3'>
-                  Name
-                </th>
-                <th scope='col' className='px-6 py-3'>
-                  Status
-                </th>
-                <th scope='col' className='px-6 py-3'>
-                  Initial Date
-                </th>
-                <th scope='col' className='px-6 py-3'>
-                  End Date
-                </th>
-                <th scope='col' className='px-6 py-3'>
-                  Days Left
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {subscriptions?.map((subscription, index) => (
-                <Row
-                  key={index}
-                  name={subscription.customerUser.name}
-                  status={subscription.status}
-                  initialDate={subscription.startDate}
-                  endDate={subscription.endDate}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <button
+        type='button'
+        className='absolute flex justify-center items-center bg-[#43DE8B] rounded-full w-14 h-14 right-10 top-24 hover:bg-[#3bc47b] text-white'
+        onClick={handleOpenModal}
+      >
+        <Icons.Plus className='w-10 h-10' />
+      </button>
+
+      {showModal && <ModalNewSubscription handleCloseModal={() => setShowModal(false)}/>}
+      <h1 className='px-10 py-4 text-4xl font-thin'>Subscriptions</h1>
+      <article className='px-10 py-6'>
+        <SubsTable />
       </article>
     </section>
   )
