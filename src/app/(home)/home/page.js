@@ -1,7 +1,41 @@
-import Navbar from '@/components/Navbar'
-import { Fragment } from 'react'
+'use client'
+import React, { useState, useEffect } from 'react'
+import { getSubscriptions } from '@/services/api'
 
 export default function Home() {
+  const [subscriptions, setSubscriptions] = useState([])
+  const [currentSubs, setCurrentSubs] = useState(0)
+  const [expiredSubs, setExpiredSubs] = useState(0)
+
+  useEffect(() => {
+    fetchData()
+  },)
+
+  const fetchData = async () => {
+    try {
+      const subscriptionsData = await getSubscriptions()
+      setSubscriptions(subscriptionsData)
+      updateDataValues(subscriptionsData)
+    } catch (error) {
+      console.log(error)
+    }      
+  }
+
+  const updateDataValues = (subscriptionsData) => {
+    let currentCount = 0
+    let expiredCount = 0
+
+    subscriptionsData.forEach((subscription) => {
+      if (subscription.status === 'CURRENT')
+        currentCount++
+      else
+        expiredCount++
+    })
+
+    setCurrentSubs(currentCount)
+    setExpiredSubs(expiredCount)
+  }
+
   return (
     <section className='w-full overflow-hidden'>
       <h1 className='px-10 py-4 text-4xl font-thin'>Home</h1>
@@ -16,17 +50,17 @@ export default function Home() {
         <article className='grid items-center justify-center grid-cols-3 mt-24'>
           <div className='flex flex-col items-center text-2xl'>
             <p className='font-thin'>Total of Subscribers</p>
-            <p className='font-bold text-[#386EF6]'>1000</p>
+            <p className='font-bold text-[#386EF6]'>{subscriptions?.length}</p>
           </div>
 
           <div className='flex flex-col items-center text-2xl'>
             <p className='font-thin'>Current</p>
-            <p className='font-bold text-[#3DC07A]'>900</p>
+            <p className='font-bold text-[#3DC07A]'>{currentSubs}</p>
           </div>
 
           <div className='flex flex-col items-center text-2xl'>
             <p className='font-thin'>Expired</p>
-            <p className='font-bold text-[#F12222]'>100</p>
+            <p className='font-bold text-[#F12222]'>{expiredSubs}</p>
           </div>
         </article>
       </section>
