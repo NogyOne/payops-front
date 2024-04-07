@@ -11,7 +11,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     const customer = {
       adminUser: 1,
       name: data.get('name'),
-      //email: data.get('email'),
+      email: data.get('email'),
       monthsPaid: +data.get('monthspaid'),
     } 
 
@@ -92,6 +92,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
                 >
                   MONTHS TO PAY
                 </label>
+                <p className='mt-1 text-sm text-gray-400'>Note: The value of Months is 1 by default</p>
               </div>
 
               <button

@@ -45,6 +45,7 @@ export default function SubsTable() {
           {customers?.map((customer, index) => (
             <Row
               key={index}
+              id={customer?.subscription.id}
               name={customer?.name}
               status={customer?.subscription.status}
               initialDate={customer?.subscription.startDate}

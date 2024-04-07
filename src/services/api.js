@@ -9,6 +9,20 @@ export const getSubscriptions = async () => {
     }
 }
 
+export const updateSubStatus = async id => {
+    try {
+        return await (
+            await fetch(`${API_URL}/subscriptions/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })).json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getCustomers = async () => {
     try {
         return await (
