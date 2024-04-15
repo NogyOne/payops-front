@@ -43,6 +43,10 @@ app.on('ready', () => {
     width: 1280,
     height: 720,
   })
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
 })
 
 app.on('window-all-closed', () => {
