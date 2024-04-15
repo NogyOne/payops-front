@@ -38,16 +38,16 @@ export default function Home() {
 
   return (
     <section className='w-full overflow-hidden'>
-      <h1 className='px-10 py-4 text-4xl font-thin'>Home</h1>
+      <h1 className='px-10 py-4 text-4xl font-thin animate-fade-up'>Home</h1>
       <section>
-        <div className='flex justify-center mx-auto'>
+        <div className='flex justify-center mx-auto animate-jump'>
           <img
             className='w-40 mt-8 animate-spin-slow'
             src='/BlueSpiralV2.png'
             alt='spiral-logo'
           />
         </div>
-        <article className='grid items-center justify-center grid-cols-3 mt-24'>
+        <article className='grid items-center justify-center grid-cols-3 mt-24 animate-fade-down'>
           <div className='flex flex-col items-center text-2xl'>
             <p className='font-thin'>Total of Subscribers</p>
             <p className='font-bold text-[#386EF6]'>{subscriptions?.length}</p>

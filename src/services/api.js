@@ -46,3 +46,15 @@ export const addCustomer = async customerObject => {
         console.log(error)
     }
 }
+
+export const deleteSubscription = async id => {
+    try {
+        return await (
+            await fetch(`${API_URL}/subscriptions/${id}`, {
+                method: 'DELETE',
+            })
+        ).json()
+    } catch (error) {
+        console.log(error)
+    }
+}

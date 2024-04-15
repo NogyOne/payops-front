@@ -2,9 +2,21 @@
 import React, {useState, useEffect} from 'react'
 import Row from '@/components/Row'
 import { getCustomers } from '@/services/api'
+import ModalDelete from '@/components/ModalDelete'
 
 export default function SubsTable() {
   const [customers, setCustomers] = useState([])
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [selectedSubId, setSelectedSubId] = useState(null)
+
+  const handleOpenDeleteModal = idSub => {
+    setSelectedSubId(idSub)
+    setShowDeleteModal(true)
+  }
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,8 +32,10 @@ export default function SubsTable() {
   }, [customers])
 
   return (
+    
     <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-      <table className='w-full text-sm text-center text-gray-500'>
+      {showDeleteModal && <ModalDelete idSub={selectedSubId} handleCloseDeleteModal={handleCloseDeleteModal}/>}
+      <table className='w-full text-sm text-center text-gray-500 animate-fade-down'>
         <thead className='text-xs text-gray-700 uppercase bg-gray-300 '>
           <tr>
             <th scope='col' className='px-6 py-3 text-left'>
@@ -31,14 +45,15 @@ export default function SubsTable() {
               Status
             </th>
             <th scope='col' className='px-6 py-3'>
-              Initial Date
+              Start Date
             </th>
             <th scope='col' className='px-6 py-3'>
               End Date
             </th>
             <th scope='col' className='px-6 py-3'>
-              Days Left
+              Remaining Days
             </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -50,6 +65,7 @@ export default function SubsTable() {
               status={customer?.subscription.status}
               initialDate={customer?.subscription.startDate}
               endDate={customer?.subscription.endDate}
+              handleOpenDeleteModal={handleOpenDeleteModal}
             />
           ))}
         </tbody>

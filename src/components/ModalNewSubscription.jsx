@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
 import { addCustomer } from '@/services/api'
 import { getFormatDate } from '@/lib/utils'
 
 export default function ModalNewSubscription({ handleCloseModal }) {
+  const [isVisible, setIsVisible] = useState(true)
+
   const handleSubmit = async event => {
     event.preventDefault()
     const data = new FormData(event.target)
@@ -11,19 +13,29 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     const customer = {
       adminUser: 1,
       name: data.get('name'),
-      email: data.get('email'),
+      email: data.get('email').toLowerCase(),
       monthsPaid: +data.get('monthspaid'),
-    } 
-
+    }
+    setIsVisible(false)
     await addCustomer(customer)
-    handleCloseModal()
+    setTimeout(() => {
+      handleCloseModal()
+    }, 200)
+  }
+
+  const handleClose = event => {
+    event.preventDefault()
+    setIsVisible(false)
+    setTimeout(() => {
+      handleCloseModal()
+    }, 200)
   }
 
   return (
     <div
       tabIndex='-1'
       aria-hidden='true'
-      className='overflow-y-auto overflow-x-hidden fixed flex items-center justify-center top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full backdrop-blur-sm'
+      className={`overflow-y-auto overflow-x-hidden fixed flex items-center justify-center top-0 right-0 left-0 z-50 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full backdrop-blur-sm animate-jump ${isVisible ? 'animate-jump' : 'animate-jump-out'}`}
     >
       <div className='relative w-full max-w-md max-h-full p-4'>
         <div className='relative pb-4 bg-white rounded-lg shadow'>
@@ -37,7 +49,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
             <button
               type='button'
               className='end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center'
-              onClick={handleCloseModal}
+              onClick={handleClose}
             >
               <Icons.X />
               <span className='sr-only'>Close modal</span>
@@ -92,7 +104,9 @@ export default function ModalNewSubscription({ handleCloseModal }) {
                 >
                   MONTHS TO PAY
                 </label>
-                <p className='mt-1 text-sm text-gray-400'>Note: The value of Months is 1 by default</p>
+                <p className='mt-1 text-sm text-gray-400'>
+                  Note: The value of Months is 1 by default
+                </p>
               </div>
 
               <button
