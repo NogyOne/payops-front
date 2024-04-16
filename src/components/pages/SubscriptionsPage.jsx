@@ -16,7 +16,7 @@ export default function SubscriptionsPage() {
   }
 
   return (
-    <section className='bg-[#EFEFEF] w-full overflow-hidden'>
+    <section className='bg-[#EFEFEF] w-full'>
       <button
         type='button'
         className='absolute flex justify-center items-center bg-[#43DE8B] rounded-full w-14 h-14 right-10 top-24 hover:bg-[#3bc47b] text-white animate-jump z-50'
