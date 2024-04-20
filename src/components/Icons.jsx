@@ -1,8 +1,10 @@
-import { UserRound, Plus, X, Pencil } from 'lucide-react'
+import { UserRound, Plus, X, Pencil, Search, ChevronDown } from 'lucide-react'
 
 export const Icons = {
-    UserRound: UserRound,
-    Plus: Plus,
-    X: X,
-    Pencil, Pencil
+    UserRound,
+    Plus,
+    X,
+    Pencil,
+    Search,
+    ChevronDown
 }

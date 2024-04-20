@@ -33,6 +33,16 @@ export const getCustomers = async page => {
   }
 }
 
+export const getCustomersByFilters = async (page, plainText, status) => {
+    try {
+        return await (
+            await fetch(`${API_URL}/customers/${page}/${plainText}/${status}`)
+        ).json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const addCustomer = async customerObject => {
   try {
     return await (
