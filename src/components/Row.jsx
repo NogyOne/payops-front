@@ -34,8 +34,8 @@ export default function Row({
       <td
         className={
           status === 'CURRENT'
-            ? 'px-6 py-4 text-green-600'
-            : 'px-6 py-4 text-red-600'
+            ? 'px-6 py-4 text-green-400 font-semibold'
+            : 'px-6 py-4 text-red-600 font-semibold'
         }
       >
         {status}
