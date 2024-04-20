@@ -1,14 +1,23 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Row from '@/components/Row'
-import { getCustomers } from '@/services/api'
+import { getCustomers, getCustomersByFilters } from '@/services/api'
 import ModalDelete from '@/components/ModalDelete'
+import SearchBar from '@/components/SearchBar'
 
 export default function SubsTable() {
   const [customers, setCustomers] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [selectedSubId, setSelectedSubId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useState({ plainText: ' ', status: 'All' })
+
+  const handleSearchSubmit = async (status, plainText) => {
+    //Arreglar page = 1 con validaciones
+    const customersData = await getCustomersByFilters(currentPage, plainText, status)
+    console.log(customersData)
+    setCustomers(customersData)
+  }
 
   const handleOpenDeleteModal = idSub => {
     setSelectedSubId(idSub)
@@ -23,14 +32,14 @@ export default function SubsTable() {
     setCurrentPage(currentPage + 1)
   }
 
-  const handlePrevPage = () =>{
+  const handlePrevPage = () => {
     setCurrentPage(currentPage - 1)
   }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const customersData = await getCustomers(currentPage)
+        const customersData = await getCustomersByFilters(currentPage, searchParams.plainText, searchParams.status)
         setCustomers(customersData)
       } catch (error) {
         console.log(error)
@@ -38,10 +47,11 @@ export default function SubsTable() {
     }
 
     fetchData()
-  }, [customers, currentPage])
+  }, [searchParams, currentPage])
 
   return (
     <>
+      <SearchBar handleSearchSubmit={handleSearchSubmit}/>
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
         {showDeleteModal && (
           <ModalDelete
@@ -87,22 +97,18 @@ export default function SubsTable() {
       </div>
       {/* Buttons Pagination */}
       <div className='flex items-end justify-end'>
-        {/* <span className='text-sm text-gray-700 '>
-          Showing{' '}
-          <span className='font-semibold text-gray-900'>1</span> to{' '}
-          <span className='font-semibold text-gray-900'>10</span> of{' '}
-          <span className='font-semibold text-gray-900'>100</span>{' '}
-          Entries
-        </span> */}
-
-        <div className='inline-flex mt-2 xs:mt-0'>
-          <button className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white rounded-s hover:bg-gray-100'
-          disabled={currentPage === 1}
-          onClick={handlePrevPage}>
+        <div className='inline-flex mt-2 shadow-md xs:mt-0'>
+          <button
+            className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white rounded-s hover:bg-gray-100'
+            disabled={currentPage === 1 || customers === 0}
+            onClick={handlePrevPage}
+          >
             Prev
           </button>
-          <button className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white border-0 border-gray-200 border-s rounded-e hover:bg-gray-100'
-          onClick={handleNextPage}>
+          <button
+            className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white border-0 border-gray-200 border-s rounded-e hover:bg-gray-100'
+            onClick={handleNextPage}
+          >
             Next
           </button>
         </div>
