@@ -22,15 +22,10 @@ export default function SearchBar({handleSearchSubmit}) {
     }
 
   return (
-    <form className='max-w-lg mb-2 ml-auto' onSubmit={handleSubmit}>
+    <form className='w-2/5 mb-2 ml-auto' onSubmit={handleSubmit}>
       <div className='flex items-center justify-center'>
-        <label
-          htmlFor='search-dropdown'
-          className='mb-2 text-sm font-medium text-gray-900 sr-only'
-        >
-        </label>
 
-        <div className='rounded-l-lg bg-[#386EF6] text-white h-full px-4 z-40'>
+        <div className='rounded-l-lg bg-[#386EF6] text-white h-full px-4 z-40 hover:bg-blue-800'>
           <Dropdown label={selectedStatus} color='' icon='' className='px-2 rounded-lg'>
             <Dropdown.Item onClick={() => {handleStatus('All')}}>👥 All</Dropdown.Item>
             <Dropdown.Item onClick={() => {handleStatus('Current')}}>✅ Current</Dropdown.Item>
@@ -43,7 +38,7 @@ export default function SearchBar({handleSearchSubmit}) {
             type='text'
             name='inputText'
             className='block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-0 focus:border-none'
-            placeholder='Search Customers, Dates & Status...'
+            placeholder='Search customers & Status...'
           />
           <button
             type='submit'

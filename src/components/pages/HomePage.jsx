@@ -40,7 +40,7 @@ export default function HomePage() {
     <section className='w-full overflow-hidden'>
       <h1 className='px-10 py-4 text-4xl font-thin animate-fade-up'>Home</h1>
       <section>
-        <div className='flex justify-center mx-auto animate-jump'>
+        <div className='flex justify-center mx-auto my-8 animate-jump'>
           <img
             className='w-40 mt-8 animate-spin-slow'
             src='/BlueSpiralV2.png'
