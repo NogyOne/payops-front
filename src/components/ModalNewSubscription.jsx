@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
 import { addCustomer } from '@/services/api'
+import { toast } from 'sonner'
 import { getFormatDate } from '@/lib/utils'
 
 export default function ModalNewSubscription({ handleCloseModal }) {
@@ -10,14 +11,26 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     event.preventDefault()
     const data = new FormData(event.target)
 
-    const customer = {
-      adminUser: 1,
-      name: data.get('name'),
-      email: data.get('email').toLowerCase(),
-      monthsPaid: +data.get('monthspaid'),
+    const name = data.get('name')
+    const email = data.get('email').toLowerCase()
+
+    if (handleValidation(name, email)) {
+      const customer = {
+        adminUser: 1,
+        name: name,
+        email: email,
+        monthsPaid: +data.get('monthspaid'),
+      }
+
+      addCustomer(customer).then(res => {
+        toast.success('Customer added successfully')        
+      })
+
+    } else {
+      toast.error('Error adding customer')      
     }
+
     setIsVisible(false)
-    await addCustomer(customer)
     setTimeout(() => {
       handleCloseModal()
     }, 200)
@@ -29,6 +42,14 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     setTimeout(() => {
       handleCloseModal()
     }, 200)
+  }
+
+  const handleValidation = (name, email) => {
+    if (name.trim() === '' && email.trim() === '') {
+      return false
+    }
+
+    return true
   }
 
   return (
@@ -65,12 +86,13 @@ export default function ModalNewSubscription({ handleCloseModal }) {
                   name='name'
                   className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                   placeholder=' '
+                  required
                 />
                 <label
                   htmlFor='floating_name'
                   className='absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto'
                 >
-                  NAME
+                  NAME <span className='text-red-700'>*</span>
                 </label>
               </div>
 
@@ -81,12 +103,13 @@ export default function ModalNewSubscription({ handleCloseModal }) {
                   name='email'
                   className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                   placeholder=' '
+                  required
                 />
                 <label
                   htmlFor='floating_email'
                   className='absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto'
                 >
-                  E-MAIL
+                  E-MAIL <span className='text-red-700'>*</span>
                 </label>
               </div>
 

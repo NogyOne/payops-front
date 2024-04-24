@@ -4,17 +4,26 @@ import Row from '@/components/Row'
 import { getCustomers, getCustomersByFilters } from '@/services/api'
 import ModalDelete from '@/components/ModalDelete'
 import SearchBar from '@/components/SearchBar'
+import { Icons } from '@/components/Icons'
+import { toast } from 'sonner'
 
 export default function SubsTable() {
   const [customers, setCustomers] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [selectedSubId, setSelectedSubId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [searchParams, setSearchParams] = useState({ plainText: ' ', status: 'All' })
+  const [searchParams, setSearchParams] = useState({
+    plainText: ' ',
+    status: 'All',
+  })
 
   const handleSearchSubmit = async (status, plainText) => {
     //Arreglar page = 1 con validaciones
-    const customersData = await getCustomersByFilters(currentPage, plainText, status)
+    const customersData = await getCustomersByFilters(
+      currentPage,
+      plainText,
+      status
+    )
     console.log(customersData)
     setCustomers(customersData)
   }
@@ -36,22 +45,40 @@ export default function SubsTable() {
     setCurrentPage(currentPage - 1)
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const customersData = await getCustomersByFilters(currentPage, searchParams.plainText, searchParams.status)
-        setCustomers(customersData)
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  const handleRefresh = () => {
+    //window.location.reload()
+    fetchData()
+    toast.info('Subscriptions page refreshed')
+  }
 
+  useEffect(() => {
     fetchData()
   }, [searchParams, currentPage])
 
+  const fetchData = async () => {
+    try {
+      const customersData = await getCustomersByFilters(
+        currentPage,
+        searchParams.plainText,
+        searchParams.status
+      )
+      setCustomers(customersData)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
-      <SearchBar handleSearchSubmit={handleSearchSubmit}/>
+      <section className='flex items-center justify-end'>
+        <button className='text-[#386EF6] hover:text-blue-400 p-1 rounded-lg hover:scale-105 transition duration-200'
+        onClick={handleRefresh}
+        >
+          <Icons.RefreshCcw />
+        </button>
+        <SearchBar handleSearchSubmit={handleSearchSubmit} />
+      </section>
+
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
         {showDeleteModal && (
           <ModalDelete
