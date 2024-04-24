@@ -41,7 +41,7 @@ app.on('ready', () => {
 
   const mainWindow = createWindow('Main', {
     width: 1280,
-    height: 720,
+    height: 750,
   })
 
   app.on('activate', () => {
