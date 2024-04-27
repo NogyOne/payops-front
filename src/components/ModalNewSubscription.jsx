@@ -12,7 +12,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     const data = new FormData(event.target)
 
     const name = data.get('name')
-    const email = data.get('email').toLowerCase()
+    const email = data.get('email').toLowerCase().trim()
 
     if (handleValidation(name, email)) {
       const customer = {
@@ -22,12 +22,15 @@ export default function ModalNewSubscription({ handleCloseModal }) {
         monthsPaid: +data.get('monthspaid'),
       }
 
-      addCustomer(customer).then(res => {
-        toast.success('Customer added successfully')        
-      })
-
+      addCustomer(customer)
+        .then(res => {
+          toast.success('Customer added successfully.')
+        })
+        .catch(err => {
+          toast.error('Error adding customer.')
+        })
     } else {
-      toast.error('Error adding customer')      
+      toast.error('Error: Invalid customer name.')
     }
 
     setIsVisible(false)
@@ -45,7 +48,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
   }
 
   const handleValidation = (name, email) => {
-    if (name.trim() === '' && email.trim() === '') {
+    if (name.trim() === '' || email.trim() === '') {
       return false
     }
 
@@ -120,6 +123,7 @@ export default function ModalNewSubscription({ handleCloseModal }) {
                   name='monthspaid'
                   className='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
                   placeholder=' '
+                  min={1}
                 />
                 <label
                   htmlFor='floating_months'

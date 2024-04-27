@@ -1,18 +1,25 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
 import { deleteSubscription } from '@/services/api'
+import { toast } from 'sonner'
 
 export default function ModalDelete({ handleCloseDeleteModal, idSub }) {
-  const labelMsg = 'Reasons about cancellation (Optional)'
   const [isVisible, setIsVisible] = useState(true)
 
   const handleSubmit = async event => {
     event.preventDefault()
     //const data = new FormData(event.target)
 
-    await deleteSubscription(idSub)
+    deleteSubscription(idSub)
+      .then(res => {
+        toast.success('Customer deleted successfully')
+      })
+      .catch(err => {
+        toast.error('Error deleting customer')
+      })
+
     setIsVisible(false)
-    setTimeout(()=>{
+    setTimeout(() => {
       handleCloseDeleteModal()
     }, 200)
   }
@@ -67,7 +74,7 @@ export default function ModalDelete({ handleCloseDeleteModal, idSub }) {
                   htmlFor='message'
                   className='flex mb-2 ml-2 text-sm font-medium text-gray-600'
                 >
-                  {labelMsg}
+                  Reasons about cancellation (Optional)
                 </label>
                 <textarea
                   id='message'
