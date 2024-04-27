@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Row from '@/components/Row'
-import { getCustomers, getCustomersByFilters } from '@/services/api'
+import { getCustomersByFilters, getCustomers } from '@/services/api'
 import ModalDelete from '@/components/ModalDelete'
 import SearchBar from '@/components/SearchBar'
 import { Icons } from '@/components/Icons'
@@ -18,13 +18,13 @@ export default function SubsTable() {
   })
 
   const handleSearchSubmit = async (status, plainText) => {
-    //Arreglar page = 1 con validaciones
+    setCurrentPage(1)
+    setSearchParams({status, plainText})
     const customersData = await getCustomersByFilters(
       currentPage,
       plainText,
       status
     )
-    console.log(customersData)
     setCustomers(customersData)
   }
 
@@ -52,27 +52,43 @@ export default function SubsTable() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [searchParams, currentPage])
-
-  const fetchData = async () => {
-    try {
-      const customersData = await getCustomersByFilters(
-        currentPage,
-        searchParams.plainText,
-        searchParams.status
-      )
-      setCustomers(customersData)
-    } catch (error) {
-      console.log(error)
+    const fetchCustomersDefault = async () => {
+      try {
+        const customersDefault = await getCustomers(currentPage)
+        setCustomers(customersDefault)
+        console.log('ola') //Why it happened twice?
+      } catch (error) {
+        toast.error('Error getting customers')
+      }
     }
-  }
+
+    fetchCustomersDefault()
+  }, [currentPage])
+
+  // useEffect(() => {
+  //   fetchData()
+  //   console.log('ola')
+  // }, [searchParams, currentPage]) //SearchParams maybe is not neccesary bc currentpage is updated when search is purchased
+
+  // const fetchData = async () => {
+  //   try {
+  //     const customersData = await getCustomersByFilters(
+  //       currentPage,
+  //       searchParams.plainText,
+  //       searchParams.status
+  //     )
+  //     setCustomers(customersData)
+  //   } catch (error) {
+  //     toast.error('Error getting customers')
+  //   }
+  // }
 
   return (
     <>
       <section className='flex items-center justify-end'>
-        <button className='text-[#386EF6] hover:text-blue-400 p-1 rounded-lg hover:scale-105 transition duration-200'
-        onClick={handleRefresh}
+        <button
+          className='text-[#386EF6] hover:text-blue-400 p-1 rounded-lg hover:scale-105 transition duration-200 active:text-blue-700'
+          onClick={handleRefresh}
         >
           <Icons.RefreshCcw />
         </button>
