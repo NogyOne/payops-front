@@ -4,7 +4,7 @@ export const getSubscriptions = async () => {
   try {
     return await (await fetch(`${API_URL}/subscriptions`)).json()
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 }
 
@@ -19,28 +19,26 @@ export const updateSubStatus = async id => {
       })
     ).json()
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 }
 
 export const getCustomers = async page => {
   try {
-    return await (
-      await fetch(`${API_URL}/customers/page/${page}`)
-    ).json()
+    return await (await fetch(`${API_URL}/customers/page/${page}`)).json()
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 }
 
 export const getCustomersByFilters = async (page, plainText, status) => {
-    try {
-        return await (
-            await fetch(`${API_URL}/customers/${page}/${plainText}/${status}`)
-        ).json()
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    return await (
+      await fetch(`${API_URL}/customers/${page}/${plainText}/${status}`)
+    ).json()
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 export const addCustomer = async customerObject => {
@@ -55,7 +53,7 @@ export const addCustomer = async customerObject => {
       })
     ).json()
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 }
 
@@ -67,6 +65,6 @@ export const deleteSubscription = async id => {
       })
     ).json()
   } catch (error) {
-    console.log(error)
+    throw new Error(error)
   }
 }
