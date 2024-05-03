@@ -25,9 +25,14 @@ export const updateSubStatus = async id => {
 
 export const getCustomers = async page => {
   try {
-    return await (await fetch(`${API_URL}/customers/page/${page}`)).json()
+    const response = await fetch(`${API_URL}/customers/page/${page}`);
+    if (!response.ok) {
+      const errorMessage = await response.json();
+      throw new Error(errorMessage.message || 'Failed to fetch customers');
+    }
+    return await response.json();
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message);
   }
 }
 
