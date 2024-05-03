@@ -12,14 +12,9 @@ export default function SubsTable() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [selectedSubId, setSelectedSubId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [searchParams, setSearchParams] = useState({
-    plainText: ' ',
-    status: 'All',
-  })
 
   const handleSearchSubmit = async (status, plainText) => {
     setCurrentPage(1)
-    setSearchParams({status, plainText})
     const customersData = await getCustomersByFilters(
       currentPage,
       plainText,
@@ -56,9 +51,8 @@ export default function SubsTable() {
       try {
         const customersDefault = await getCustomers(currentPage)
         setCustomers(customersDefault)
-        console.log('ola') //Why it happened twice?
       } catch (error) {
-        toast.error('Error getting customers')
+        toast.error('Error getting customers. Try later.')
       }
     }
 
@@ -86,12 +80,12 @@ export default function SubsTable() {
   return (
     <>
       <section className='flex items-center justify-end'>
-        <button
+        {/* <button
           className='text-[#386EF6] hover:text-blue-400 p-1 rounded-lg hover:scale-105 transition duration-200 active:text-blue-700'
           onClick={handleRefresh}
         >
           <Icons.RefreshCcw />
-        </button>
+        </button> */}
         <SearchBar handleSearchSubmit={handleSearchSubmit} />
       </section>
 
@@ -142,14 +136,15 @@ export default function SubsTable() {
       <div className='flex items-end justify-end'>
         <div className='inline-flex mt-2 shadow-md xs:mt-0'>
           <button
-            className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white rounded-s hover:bg-gray-100'
-            disabled={currentPage === 1 || customers === 0}
+            className={`flex items-center justify-center h-8 px-3 text-sm font-medium rounded-s hover:bg-gray-100 ${currentPage === 1 || (customers.length === 0 && currentPage === 1) ? 'bg-gray-300 hover:bg-gray-300 text-gray-400' : 'bg-white'}`}
+            disabled={currentPage === 1 || (customers.length === 0 && currentPage === 1)}
             onClick={handlePrevPage}
           >
             Prev
           </button>
           <button
-            className='flex items-center justify-center h-8 px-3 text-sm font-medium bg-white border-0 border-gray-200 border-s rounded-e hover:bg-gray-100'
+            className={`flex items-center justify-center h-8 px-3 text-sm font-medium rounded-s hover:bg-gray-100 ${customers.length < 6 ? 'bg-gray-300 hover:bg-gray-300 text-gray-400' : 'bg-white'}`}
+            disabled={customers.length < 6}
             onClick={handleNextPage}
           >
             Next
