@@ -3,12 +3,14 @@ import { Icons } from '@/components/Icons'
 import Navlink from '@/components/Navlink'
 import { listMenu } from '@/config/topbar'
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 // Set de parameters of the user
 export default function Navbar({ name, username }) {
 
-  const [currentPage, setCurrentPage] = useState('/home')
-
+  const pathname = usePathname()
+  const [currentPage, setCurrentPage] = useState(pathname)
+  
   const handleActive = (page) => {
     setCurrentPage(page)
   }

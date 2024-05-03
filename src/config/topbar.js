@@ -6,5 +6,9 @@ export const listMenu = [
     {
         name: 'Subscriptions',
         href: '/subscriptions'
+    },
+    {
+        name: 'Advertisement',
+        href: '#'
     }
 ]
