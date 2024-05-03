@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const serve = require('electron-serve')
 const path = require('path')
 
@@ -15,6 +15,9 @@ const createWindow = (windowName, options) => {
     name: windowName,
     width: options.width,
     height: options.height,
+    minHeight:options.height,
+    minWidth: options.width,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -26,7 +29,7 @@ const createWindow = (windowName, options) => {
     })
   } else {
     win.loadURL(`http://localhost:3000/home`)
-    win.webContents.openDevTools()
+    win.webContents.openDevTools() //Must to put to open when is on dev mode
     win.webContents.on('did-fail-load', (e, code, desc) => {
       win.webContents.reloadIgnoringCache()
     })
@@ -42,6 +45,10 @@ app.on('ready', () => {
   const mainWindow = createWindow('Main', {
     width: 1280,
     height: 750,
+  })
+
+  ipcMain.on('minimize-window', () => {
+    console.log('minimize')
   })
 
   app.on('activate', () => {
