@@ -25,12 +25,12 @@ export const updateSubStatus = async id => {
 
 export const getCustomers = async page => {
   try {
-    const response = await fetch(`${API_URL}/customers/page/${page}`);
+    const response = await fetch(`${API_URL}/customers/page/${page}`)
     if (!response.ok) {
-      const errorMessage = await response.json();
-      throw new Error(errorMessage.message || 'Failed to fetch customers');
+      const errorMessage = await response.json()
+      throw new Error(errorMessage.message || 'Failed to fetch customers')
     }
-    return await response.json();
+    return await response.json()
   } catch (error) {
     throw new Error(error.message);
   }
@@ -69,6 +69,34 @@ export const deleteSubscription = async id => {
         method: 'DELETE',
       })
     ).json()
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const getCustomerById = async id => {
+  try {
+    const response = await fetch(`${API_URL}/customers/${id}`)
+    if (!response.ok) {
+      const errorMessage = await response.json()
+      throw new Error(errorMessage.message || 'Failed to get Customer')
+    }
+    return await response.json()
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const updateCustomer = async (id, customerObj) => {
+  try {
+    return await (
+      await fetch(`${API_URL}/customers/${id}`, {  
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(customerObj)
+    })).json()    
   } catch (error) {
     throw new Error(error)
   }
