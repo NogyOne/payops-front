@@ -16,7 +16,7 @@ export default function TitleBar() {
     }
 
   return (
-    <div className='p-1 text-xs font-semibold bg-[#27314b] text-white border-b-4 border-[#324d88]'>
+    <div className='z-50 p-1 text-xs font-semibold bg-[#27314b] text-white border-b-4 border-[#324d88]'>
       <div className='flex items-center justify-between px-1'>
         <div className='flex items-center justify-start w-full gap-1' id='titlebar'>
           <img src='/BlueSpiralV2.png' alt='logo' className='w-4 h-4' />
