@@ -68,7 +68,9 @@ export default function ModalNewSubscription({ handleCloseModal }) {
               <h3 className='text-xl font-semibold text-gray-900 '>
                 New Subscription
               </h3>
-              <p className=''>Current Date: {getFormatDate(new Date())}</p>
+              <p className='font-light text-md'>
+                Current Date: {getFormatDate(new Date())}
+              </p>
             </div>
             <button
               type='button'
