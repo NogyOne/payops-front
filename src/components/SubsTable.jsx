@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Row from '@/components/Row'
 import { getCustomersByFilters, getCustomers } from '@/services/api'
 import ModalDelete from '@/components/ModalDelete'
+import ModalEdit from '@/components/ModalEdit'
 import SearchBar from '@/components/SearchBar'
 import { Icons } from '@/components/Icons'
 import { toast } from 'sonner'
@@ -10,6 +11,7 @@ import { toast } from 'sonner'
 export default function SubsTable() {
   const [customers, setCustomers] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
   const [selectedSubId, setSelectedSubId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -21,6 +23,15 @@ export default function SubsTable() {
       status
     )
     setCustomers(customersData)
+  }
+
+  const handleOpenEditModal = id => {
+    setSelectedSubId(id)
+    setShowEditModal(true)
+  }
+
+  const handleCloseEdit = () => {
+    setShowEditModal(false)
   }
 
   const handleOpenDeleteModal = idSub => {
@@ -96,6 +107,11 @@ export default function SubsTable() {
             handleCloseDeleteModal={handleCloseDeleteModal}
           />
         )}
+
+        {showEditModal && (
+          <ModalEdit handleCloseEdit={handleCloseEdit} id={selectedSubId} />
+        )}
+
         <table className='w-full text-sm text-center text-gray-500 animate-fade-down'>
           <thead className='text-xs text-gray-700 uppercase bg-gray-300 '>
             <tr>
@@ -121,12 +137,14 @@ export default function SubsTable() {
             {customers?.map((customer, index) => (
               <Row
                 key={index}
-                id={customer?.subscription.id}
+                idCustomer={customer?.id}
+                idSub={customer?.subscription.id}
                 name={customer?.name}
                 status={customer?.subscription.status}
                 initialDate={customer?.subscription.startDate}
                 endDate={customer?.subscription.endDate}
                 handleOpenDeleteModal={handleOpenDeleteModal}
+                handleOpenEditModal={handleOpenEditModal}
               />
             ))}
           </tbody>
@@ -137,7 +155,9 @@ export default function SubsTable() {
         <div className='inline-flex mt-2 shadow-md xs:mt-0'>
           <button
             className={`flex items-center justify-center h-8 px-3 text-sm font-medium rounded-s hover:bg-gray-100 ${currentPage === 1 || (customers.length === 0 && currentPage === 1) ? 'bg-gray-300 hover:bg-gray-300 text-gray-400' : 'bg-white'}`}
-            disabled={currentPage === 1 || (customers.length === 0 && currentPage === 1)}
+            disabled={
+              currentPage === 1 || (customers.length === 0 && currentPage === 1)
+            }
             onClick={handlePrevPage}
           >
             Prev
