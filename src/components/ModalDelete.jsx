@@ -24,8 +24,7 @@ export default function ModalDelete({ handleCloseDeleteModal, idSub }) {
     }, 200)
   }
 
-  const handleClose = event => {
-    event.preventDefault()
+  const handleClose = () => {
     setIsVisible(false)
     setTimeout(() => {
       handleCloseDeleteModal()
