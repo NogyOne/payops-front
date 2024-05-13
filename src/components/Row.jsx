@@ -4,12 +4,14 @@ import { updateSubStatus } from '@/services/api'
 import { Icons } from '@/components/Icons'
 
 export default function Row({
-  id,
+  idCustomer,
+  idSub,
   name,
   status,
   initialDate,
   endDate,
   handleOpenDeleteModal,
+  handleOpenEditModal,
 }) {
   const getRemainingDays = () => {
     const difDates = new Date(endDate).getTime() - new Date().getTime()
@@ -17,7 +19,7 @@ export default function Row({
     let remainingDays = Math.ceil(difDates / (1000 * 60 * 60 * 24))
     if (remainingDays <= 0) {
       remainingDays = 0
-      updateSubStatus(id)
+      updateSubStatus(idSub)
     }
 
     return remainingDays
@@ -45,10 +47,13 @@ export default function Row({
       <td className='px-6 py-4'>{getRemainingDays()}</td>
       <td className='flex items-center justify-center py-4 pr-6'>
         <div className='flex space-x-2'>
-          <Icons.Pencil className='text-gray-300 hover:text-blue-600' />
+          <Icons.Pencil
+            className='text-gray-300 hover:text-blue-600'
+            onClick={() => handleOpenEditModal(idCustomer)}
+          />
           <Icons.X
             className='text-gray-300 hover:text-red-600'
-            onClick={() => handleOpenDeleteModal(id)}
+            onClick={() => handleOpenDeleteModal(idSub)}
           />
         </div>
       </td>
