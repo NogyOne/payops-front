@@ -15,7 +15,7 @@ const createWindow = (windowName, options) => {
     name: windowName,
     width: options.width,
     height: options.height,
-    minHeight:options.height,
+    minHeight: options.height,
     minWidth: options.width,
     frame: false,
     webPreferences: {
@@ -28,7 +28,7 @@ const createWindow = (windowName, options) => {
       win.loadURL('app://-')
     })
   } else {
-    win.loadURL(`http://localhost:3000/home`)
+    win.loadURL(`http://localhost:3000/login`)
     win.webContents.openDevTools() //Must to put to open when is on dev mode
     win.webContents.on('did-fail-load', (e, code, desc) => {
       win.webContents.reloadIgnoringCache()
@@ -37,10 +37,10 @@ const createWindow = (windowName, options) => {
 }
 
 app.on('ready', () => {
-//   const loginWindow = createWindow('Login', {
-//     width: 460,
-//     height: 700,
-//   })
+  //   const loginWindow = createWindow('Login', {
+  //     width: 460,
+  //     height: 700,
+  //   })
 
   const mainWindow = createWindow('Main', {
     width: 1280,

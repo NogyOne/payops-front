@@ -32,7 +32,7 @@ export const getCustomers = async page => {
     }
     return await response.json()
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error.message)
   }
 }
 
@@ -90,13 +90,30 @@ export const getCustomerById = async id => {
 export const updateCustomer = async (id, customerObj) => {
   try {
     return await (
-      await fetch(`${API_URL}/customers/${id}`, {  
+      await fetch(`${API_URL}/customers/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(customerObj)
-    })).json()    
+        body: JSON.stringify(customerObj),
+      })
+    ).json()
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const login = async userObj => {
+  try {
+    return await (
+      await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userObj),
+      })
+    ).json()
   } catch (error) {
     throw new Error(error)
   }
