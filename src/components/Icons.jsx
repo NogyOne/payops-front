@@ -6,7 +6,8 @@ import {
   Search,
   ChevronDown,
   RefreshCcw,
-  Minus
+  Minus,
+  LogOut,
 } from 'lucide-react'
 
 export const Icons = {
@@ -17,5 +18,6 @@ export const Icons = {
   Search,
   ChevronDown,
   RefreshCcw,
-  Minus
+  Minus,
+  LogOut,
 }
