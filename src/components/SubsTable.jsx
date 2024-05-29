@@ -14,9 +14,13 @@ export default function SubsTable() {
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedSubId, setSelectedSubId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [status, setStatus] = useState('All')
+  const [plainText, setPlainText] = useState(' ')
 
   const handleSearchSubmit = async (status, plainText) => {
     setCurrentPage(1)
+    setStatus(status)
+    setPlainText(plainText)
     const customersData = await getCustomersByFilters(
       currentPage,
       plainText,
@@ -60,7 +64,11 @@ export default function SubsTable() {
   useEffect(() => {
     const fetchCustomersDefault = async () => {
       try {
-        const customersDefault = await getCustomers(currentPage)
+        const customersDefault = await getCustomersByFilters(
+          currentPage,
+          plainText,
+          status
+        )
         setCustomers(customersDefault)
       } catch (error) {
         toast.error('Error getting customers. Try later.')
@@ -69,6 +77,19 @@ export default function SubsTable() {
 
     fetchCustomersDefault()
   }, [currentPage])
+
+  // useEffect(() => {
+  //   const fetchCustomersDefault = async () => {
+  //     try {
+  //       const customersDefault = await getCustomers(currentPage)
+  //       setCustomers(customersDefault)
+  //     } catch (error) {
+  //       toast.error('Error getting customers. Try later.')
+  //     }
+  //   }
+
+  //   fetchCustomersDefault()
+  // }, [currentPage])
 
   // useEffect(() => {
   //   fetchData()
