@@ -118,3 +118,19 @@ export const login = async userObj => {
     throw new Error(error)
   }
 }
+
+export const addAdmin = async adminObj => {
+  try {
+    return await (
+      await fetch(`${API_URL}/adminUsers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(adminObj),
+      })
+    ).json()
+  } catch (error) {
+    throw new Error(error)
+  }
+}

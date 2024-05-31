@@ -7,12 +7,22 @@ import { usePathname } from 'next/navigation'
 import { useAuth } from '@/store/authStore'
 import { Dropdown } from 'flowbite-react'
 import { signOut } from 'next-auth/react'
+import ModalNewAdmin from '@/components/ModalNewAdmin'
 
 // Set de parameters of the user
 export default function Navbar() {
   const { user } = useAuth()
   const pathname = usePathname()
   const [currentPage, setCurrentPage] = useState(pathname)
+  const [showModal, setShowModal] = useState(false)
+
+  const handleClose = () => {
+    setShowModal(false)
+  }
+
+  const handleOpen = () => {
+    setShowModal(true)
+  }
 
   const handleActive = page => {
     setCurrentPage(page)
@@ -20,6 +30,8 @@ export default function Navbar() {
 
   return (
     <nav className='flex justify-between items-center h-32 bg-[#386EF6] text-white w-full px-10 border-b-[5px] border-[#0DBCFB]'>
+      {showModal && <ModalNewAdmin handleClose={handleClose}></ModalNewAdmin>}
+
       <section className='flex flex-col justify-between'>
         <div className='flex flex-row items-center justify-start gap-2 mt-6 mb-8'>
           <Icons.UserRound className='w-8 h-8' />
@@ -31,13 +43,25 @@ export default function Navbar() {
               @{user?.username}
             </div>
           </div>
-          <Dropdown color='' icon='' className='px-2 rounded-lg'>
+          <Dropdown color='' icon='' className='px-2 rounded-lg '>
+            <Dropdown.Item
+              onClick={() => {
+                handleOpen()
+              }}
+              className='flex items-center justify-start gap-2'
+            >
+              <Icons.UserRound />
+              Add admin
+            </Dropdown.Item>
+
             <Dropdown.Item
               onClick={() => {
                 signOut()
               }}
+              className='flex items-center justify-start gap-2'
             >
               <Icons.LogOut />
+              Log out
             </Dropdown.Item>
           </Dropdown>
         </div>
