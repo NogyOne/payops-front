@@ -134,3 +134,25 @@ export const addAdmin = async adminObj => {
     throw new Error(error)
   }
 }
+
+export const payConfirmEmail = async emailObj => {
+  try {
+    const response = await fetch(`${API_URL}/send`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailObj),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.message || 'Error al enviar el correo')
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error in payConfirmEmail:', error)
+    throw new Error(error)
+  }
+}

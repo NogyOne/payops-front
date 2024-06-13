@@ -9,7 +9,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchData()
-  },)
+  })
 
   const fetchData = async () => {
     try {
@@ -18,18 +18,16 @@ export default function HomePage() {
       updateDataValues(subscriptionsData)
     } catch (error) {
       console.log(error)
-    }      
+    }
   }
 
-  const updateDataValues = (subscriptionsData) => {
+  const updateDataValues = subscriptionsData => {
     let currentCount = 0
     let expiredCount = 0
 
-    subscriptionsData.forEach((subscription) => {
-      if (subscription.status === 'CURRENT')
-        currentCount++
-      else
-        expiredCount++
+    subscriptionsData.forEach(subscription => {
+      if (subscription.status === 'CURRENT') currentCount++
+      else expiredCount++
     })
 
     setCurrentSubs(currentCount)
@@ -37,7 +35,7 @@ export default function HomePage() {
   }
 
   return (
-    <section className='w-full overflow-hidden'>
+    <section className='w-full h-screen overflow-hidden'>
       <h1 className='px-10 py-4 text-4xl font-thin animate-fade-up'>Home</h1>
       <section>
         <div className='flex justify-center mx-auto my-8 animate-jump'>

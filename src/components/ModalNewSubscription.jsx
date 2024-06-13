@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
-import { addCustomer } from '@/services/api'
+import { addCustomer, payConfirmEmail } from '@/services/api'
 import { toast } from 'sonner'
 import { getFormatDate } from '@/lib/utils'
 import { useAuth } from '@/store/authStore'
@@ -27,6 +27,18 @@ export default function ModalNewSubscription({ handleCloseModal }) {
       addCustomer(customer)
         .then(res => {
           toast.success('Customer added successfully.')
+
+          payConfirmEmail({
+            to: customer.email,
+            subject: 'Company name',
+            html: '<h2>Payment Confirmation💸</h2><br/> <p><strong>Months Paid: </strong>1</p>',
+          })
+            .then(res => {
+              toast.success('Payment confirmation email sent.')
+            })
+            .catch(err => {
+              toast.error('Error sending email payment confirmation.')
+            })
         })
         .catch(err => {
           toast.error('Error adding customer.')
