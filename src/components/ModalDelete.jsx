@@ -79,8 +79,9 @@ export default function ModalDelete({ handleCloseDeleteModal, idSub }) {
                   id='message'
                   name='reasons'
                   rows='6'
-                  className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 ring-gray-500 resize-none'
-                  placeholder='Write reasons about subcription cancellation (Optional)'
+                  className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-700 focus:border-red-700 ring-gray-500 resize-none'
+                  placeholder='
+                  Your subscription was canceled for...'
                 ></textarea>
                 <p className='mt-1 ml-2 text-sm text-left text-gray-400'>
                   Note: The message is{' '}
