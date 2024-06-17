@@ -6,6 +6,7 @@ import { Icons } from '@/components/Icons'
 
 export default function SubscriptionsPage() {
   const [showModal, setShowModal] = useState(false)
+  const [showImage, setShowImage] = useState(false)
 
   const handleOpenModal = () => {
     setShowModal(true)
@@ -31,7 +32,19 @@ export default function SubscriptionsPage() {
         Subscriptions
       </h1>
       <article className='px-10 py-6'>
-        <SubsTable />
+        <SubsTable setShowImage={setShowImage} />
+        {showImage && (
+          <div className='animate-fade-down'>
+            <img
+              src='/norow-animate.svg'
+              alt='bro-animate'
+              className='w-[350px] mx-auto'
+            />
+            <p className='mx-auto text-xl font-bold text-center text-gray-400'>
+              There are no records.
+            </p>
+          </div>
+        )}
       </article>
     </section>
   )

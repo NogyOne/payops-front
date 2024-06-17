@@ -8,7 +8,7 @@ import SearchBar from '@/components/SearchBar'
 import { Icons } from '@/components/Icons'
 import { toast } from 'sonner'
 
-export default function SubsTable() {
+export default function SubsTable({ setShowImage }) {
   const [customers, setCustomers] = useState([])
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
@@ -70,13 +70,18 @@ export default function SubsTable() {
           status
         )
         setCustomers(customersDefault)
+        if (customersDefault.length === 0) {
+          setShowImage(true)
+        } else {
+          setShowImage(false)
+        }
       } catch (error) {
         toast.error('Error getting customers. Try later.')
       }
     }
 
     fetchCustomersDefault()
-  }, [currentPage])
+  }, [currentPage, customers])
 
   // useEffect(() => {
   //   const fetchCustomersDefault = async () => {
@@ -166,6 +171,7 @@ export default function SubsTable() {
                 endDate={customer?.subscription.endDate}
                 handleOpenDeleteModal={handleOpenDeleteModal}
                 handleOpenEditModal={handleOpenEditModal}
+                email={customer?.email}
               />
             ))}
           </tbody>
