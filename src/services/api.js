@@ -135,7 +135,15 @@ export const addAdmin = async adminObj => {
   }
 }
 
-export const payConfirmEmail = async emailObj => {
+export const getAdminUsers = async () => {
+  try {
+    return await (await fetch(`${API_URL}/adminUsers`)).json()
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const sendEmail = async emailObj => {
   try {
     const response = await fetch(`${API_URL}/send`, {
       method: 'POST',

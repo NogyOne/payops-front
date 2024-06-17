@@ -1,13 +1,29 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
+import { getAdminUsers } from '@/services/api'
 
 export default function LoginPage() {
   const { register, handleSubmit } = useForm()
   const router = useRouter()
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const adminUsers = await getAdminUsers()
+        if (adminUsers.length === 0) {
+          router.push('/welcome')
+        }
+      } catch (error) {
+        console.log(error)
+        toast.error('Error to initialize the app. Please restart.')
+      }
+    }
+    checkAdmin()
+  })
 
   const onSubmit = handleSubmit(async data => {
     const res = await signIn('credentials', {
