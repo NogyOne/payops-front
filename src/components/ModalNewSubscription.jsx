@@ -28,9 +28,10 @@ export default function ModalNewSubscription({ handleCloseModal }) {
         .then(res => {
           toast.success('Customer added successfully.')
           sendEmail({
+            from: user.company,
             to: customer.email,
-            subject: 'Company name',
-            html: '<h2>Payment Confirmation💸</h2><br/> <p><strong>Months Paid: </strong>1</p>',
+            subject: 'Payment Confirmation',
+            html: '<h3>Payment Confirmation💸</h3><br/> <p><strong>Months Paid: </strong>1</p>',
           })
             .then(res => {
               toast.success('Payment confirmation email sent.')
