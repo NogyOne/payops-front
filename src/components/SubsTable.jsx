@@ -70,18 +70,21 @@ export default function SubsTable({ setShowImage }) {
           status
         )
         setCustomers(customersDefault)
-        if (customersDefault.length === 0) {
-          setShowImage(true)
-        } else {
-          setShowImage(false)
-        }
+        setShowImage(customersDefault.length === 0)
       } catch (error) {
         toast.error('Error getting customers. Try later.')
       }
     }
 
+    // const promise =
     fetchCustomersDefault()
-  }, [currentPage, customers])
+
+    // toast.promise(promise, {
+    //   loading: 'Loading...',
+    //   success: 'Customers loaded successfully',
+    //   error: 'Error getting customers. Try later.',
+    // }) //Check it later, maybe it won't work well
+  }, [currentPage]) //customers dependecy makes infinite loop
 
   // useEffect(() => {
   //   const fetchCustomersDefault = async () => {
@@ -169,9 +172,10 @@ export default function SubsTable({ setShowImage }) {
                 status={customer?.subscription.status}
                 initialDate={customer?.subscription.startDate}
                 endDate={customer?.subscription.endDate}
+                email={customer?.email}
+                emailExpiredSent={customer?.subscription.emailExpiredSent}
                 handleOpenDeleteModal={handleOpenDeleteModal}
                 handleOpenEditModal={handleOpenEditModal}
-                email={customer?.email}
               />
             ))}
           </tbody>
