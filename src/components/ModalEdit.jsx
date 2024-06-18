@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Icons } from '@/components/Icons'
 import { getFormatDate } from '@/lib/utils'
-import { getCustomerById, updateCustomer } from '@/services/api'
+import { getCustomerById, updateCustomer, sendEmail } from '@/services/api'
 import { toast } from 'sonner'
+import { useAuth } from '@/store/authStore'
 
 export default function ModalEdit({ handleCloseEdit, id }) {
   const [isVisible, setIsVisible] = useState(true)
   const [customer, setCustomer] = useState()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const { user } = useAuth()
 
   useEffect(() => {
     const getCustomer = async () => {
@@ -28,22 +30,40 @@ export default function ModalEdit({ handleCloseEdit, id }) {
   const handleSubmit = async event => {
     event.preventDefault()
 
-    const monthsPaid = (new FormData(event.target)).get('monthspaid')
+    const monthsPaid = new FormData(event.target).get('monthspaid')
 
     const customerUpd = {
       name: name,
       email: email,
       idSub: customer?.subscription.id,
-      monthsPaid: monthsPaid
+      monthsPaid: monthsPaid,
     }
 
     updateCustomer(id, customerUpd)
-      .then(res =>{
+      .then(res => {
         toast.success('Customer updated succesfully.')
+        sendEmail({
+          from: user.company,
+          to: customer.email,
+          subject: 'Subscription updated',
+          html: '<h3>Payment Confirmation💸</h3><br/> <p>Your subscription has been updated.</p> <p><strong>Months Paid: </strong>1</p>',
+        })
+          .then(res => {
+            toast.success('Payment confirmation email sent.')
+          })
+          .catch(err => {
+            toast.error('Error sending email payment confirmation.')
+          })
       })
       .catch(err => {
         toast.error('Failed to update customer.')
+        console.log(err)
       })
+
+    setIsVisible(false)
+    setTimeout(() => {
+      handleClose()
+    }, 200)
   }
 
   const handleClose = () => {
