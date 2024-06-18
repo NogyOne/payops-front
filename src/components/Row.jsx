@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getFormatDate } from '@/lib/utils'
 import { updateSubStatus, sendEmail } from '@/services/api'
 import { Icons } from '@/components/Icons'
+import { useAuth } from '@/store/authStore'
 
 export default function Row({
   idCustomer,
@@ -10,10 +11,13 @@ export default function Row({
   status,
   initialDate,
   endDate,
+  email,
+  emailExpiredSent,
   handleOpenDeleteModal,
   handleOpenEditModal,
-  email,
 }) {
+  const { user } = useAuth()
+
   const [remainingDays, setRemainingDays] = useState(
     calculateRemainingDays(endDate)
   )
@@ -29,14 +33,15 @@ export default function Row({
       const days = calculateRemainingDays(endDate)
       setRemainingDays(days > 0 ? days : 0)
 
-      if (days <= 0) {
+      if (days <= 0 && !emailExpiredSent) {
         updateSubStatus(idSub)
           .then(() => {
-            // sendEmail({
-            //   to: email,
-            //   subject: 'Company name',
-            //   html: '<h2>Subscription Expired, renovate it now</h2><br/> <p>Your subscription has been expired.</p>',
-            // })
+            sendEmail({
+              from: user.company,
+              to: email,
+              subject: `Your subscription on ${user.company} has expired.`,
+              html: '<h2>Subscription Expired, renovate it now</h2><br/> <p>Your subscription has been expired.</p>',
+            })
           })
           .catch(error =>
             console.error('Error updating subscription status', error)
@@ -52,7 +57,7 @@ export default function Row({
 
     // Limpiar el intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId)
-  }, [endDate, idSub, email])
+  }, [endDate, emailExpiredSent])
 
   return (
     <tr className='text-center bg-white border-b cursor-pointer hover:bg-gray-100'>
