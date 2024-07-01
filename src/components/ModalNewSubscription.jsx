@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
 import { addCustomer, sendEmail } from '@/services/api'
 import { toast } from 'sonner'
-import { getFormatDate } from '@/lib/utils'
+import { getFormatDate, validateForm } from '@/lib/utils'
 import { useAuth } from '@/store/authStore'
 
 export default function ModalNewSubscription({ handleCloseModal }) {
@@ -15,8 +15,9 @@ export default function ModalNewSubscription({ handleCloseModal }) {
 
     const name = data.get('name')
     const email = data.get('email').toLowerCase().trim()
+    const fieldArr = [name, email]
 
-    if (handleValidation(name, email)) {
+    if (validateForm(fieldArr)) {
       const customer = {
         adminUser: user.id,
         name: name,
@@ -59,14 +60,6 @@ export default function ModalNewSubscription({ handleCloseModal }) {
     setTimeout(() => {
       handleCloseModal()
     }, 200)
-  }
-
-  const handleValidation = (name, email) => {
-    if (name.trim() === '' || email.trim() === '') {
-      return false
-    }
-
-    return true
   }
 
   return (
