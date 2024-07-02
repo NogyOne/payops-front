@@ -11,6 +11,8 @@ const appServe = app.isPackaged
   : null
 
 const createWindow = (windowName, options) => {
+  const iconPath = path.resolve(__dirname, 'public/BlueSpiralV2.ico')
+
   const win = new BrowserWindow({
     name: windowName,
     width: options.width,
@@ -23,6 +25,7 @@ const createWindow = (windowName, options) => {
       contextIsolation: true,
       enableRemoteModule: false,
     },
+    icon: iconPath,
   })
 
   if (app.isPackaged) {
