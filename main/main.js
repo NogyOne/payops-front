@@ -19,7 +19,9 @@ const createWindow = (windowName, options) => {
     minWidth: options.width,
     frame: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.resolve(__dirname, 'preload.js'),
+      contextIsolation: true,
+      enableRemoteModule: false,
     },
   })
 
@@ -34,6 +36,8 @@ const createWindow = (windowName, options) => {
       win.webContents.reloadIgnoringCache()
     })
   }
+
+  return win
 }
 
 app.on('ready', () => {
@@ -48,7 +52,7 @@ app.on('ready', () => {
   })
 
   ipcMain.on('minimize-window', () => {
-    console.log('minimize')
+    mainWindow.minimize()
   })
 
   app.on('activate', () => {
