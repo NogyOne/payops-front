@@ -16,3 +16,10 @@ export const validateForm = fieldsArr => {
   })
   return true
 }
+
+export const validatePassword = (pass, confirmPass) => {
+  if (pass === confirmPass) {
+    return true
+  }
+  return false
+}

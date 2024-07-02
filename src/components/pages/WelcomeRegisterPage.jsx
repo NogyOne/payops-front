@@ -1,15 +1,23 @@
 'use client'
 import React from 'react'
 import { toast } from 'sonner'
-import { validateForm } from '@/lib/utils'
+import { validateForm, validatePassword } from '@/lib/utils'
 import { addAdmin } from '@/services/api'
 import { useRouter } from 'next/navigation'
 
 export default function WelcomeRegisterPage() {
   const router = useRouter()
+  const [pass, setPass] = useState('')
+  const [confPass, setConfPass] = useState('')
 
   const handleSubmit = async event => {
     event.preventDefault()
+
+    if (!validatePassword(pass, confPass)) {
+      toast.error('Passwords doesn`t match.')
+      return
+    }
+
     const data = new FormData(event.target)
 
     const name = data.get('name')
@@ -132,6 +140,9 @@ export default function WelcomeRegisterPage() {
 
             <div className='relative z-0'>
               <input
+                onChange={e => {
+                  setPass(e.target.value)
+                }}
                 type='password'
                 id='floating_password'
                 name='password'
@@ -150,6 +161,9 @@ export default function WelcomeRegisterPage() {
 
             <div className='relative z-0'>
               <input
+                onChange={e => {
+                  setConfPass(e.target.value)
+                }}
                 type='password'
                 id='floating_confpassword'
                 name='confirmPass'

@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
 import { Icons } from '@/components/Icons'
 import { toast } from 'sonner'
-import { getFormatDate, validateForm } from '@/lib/utils'
+import { getFormatDate, validateForm, validatePassword } from '@/lib/utils'
 import { addAdmin } from '@/services/api'
+import { useAuth } from '@/store/authStore'
 
 export default function ModalNewAdmin({ handleClose }) {
+  const { user } = useAuth()
   const [isVisible, setIsVisible] = useState(true)
+  const [pass, setPass] = useState('')
+  const [confPass, setConfPass] = useState('')
 
   const handleCloseModal = () => {
     setIsVisible(false)
@@ -16,6 +20,12 @@ export default function ModalNewAdmin({ handleClose }) {
 
   const handleSubmit = async event => {
     event.preventDefault()
+
+    if (!validatePassword(pass, confPass)) {
+      toast.error('Passwords doesn`t match.')
+      return
+    }
+
     const data = new FormData(event.target)
 
     const name = data.get('name')
@@ -23,7 +33,8 @@ export default function ModalNewAdmin({ handleClose }) {
     const email = data.get('email')
     const password = data.get('password')
     const confirmPass = data.get('confirmPass')
-    const fieldArr = [name, username, email, password, confirmPass]
+    const company = user.company
+    const fieldArr = [name, username, email, password, confirmPass, company]
 
     if (validateForm(fieldArr)) {
       const newAdmin = {
@@ -31,6 +42,7 @@ export default function ModalNewAdmin({ handleClose }) {
         username: username,
         email: email,
         password: password,
+        company: company,
       }
 
       addAdmin(newAdmin)
@@ -130,6 +142,9 @@ export default function ModalNewAdmin({ handleClose }) {
 
               <div className='relative z-0'>
                 <input
+                  onChange={e => {
+                    setPass(e.target.value)
+                  }}
                   type='password'
                   id='floating_password'
                   name='password'
@@ -148,6 +163,9 @@ export default function ModalNewAdmin({ handleClose }) {
 
               <div className='relative z-0'>
                 <input
+                  onChange={e => {
+                    setConfPass(e.target.value)
+                  }}
                   type='password'
                   id='floating_confpassword'
                   name='confirmPass'
